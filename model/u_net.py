@@ -10,11 +10,11 @@ def get_unet_model(input_shape=(256, 256, 3), num_classes=1):
         return y3
 
     def fire_module(filters, kernel_size):
-        return lambda x: fire_down(x, filters, kernel_size)
+        return lambda x: fire(x, filters, kernel_size)
 
     def fire_up(x, filters, kernel_size, concat_layer):
         y1 = Conv2DTranspose(filters, (2, 2), strides=(2, 2), padding='same')(x)
-        y2 = concatenate([up6, down_layer])(y1)
+        y2 = concatenate([y1, concat_layer])
         y3 = fire_module(filters, kernel_size)(y2)
         return y3
 
