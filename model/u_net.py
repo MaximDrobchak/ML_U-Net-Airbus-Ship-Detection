@@ -1,12 +1,13 @@
 from keras.models import Model
 from keras.layers import Input, concatenate, Conv2D, MaxPooling2D,  BatchNormalization, Conv2DTranspose
+from params import momentum, TARGET_SIZE
 
-def get_unet_model(input_shape=(256, 256, 3), num_classes=1):
+def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
 
     def fire(x, filters, kernel_size):
         y1 = Conv2D(filters, kernel_size, activation='relu', padding='same')(x)
         y2 = Conv2D(filters, kernel_size, activation='relu', padding='same')(y1)
-        y3 = BatchNormalization(momentum=0.9)(y2)     
+        y3 = BatchNormalization(momentum=momentum)(y2)     
         return y3
 
     def fire_module(filters, kernel_size):
@@ -35,14 +36,18 @@ def get_unet_model(input_shape=(256, 256, 3), num_classes=1):
     down4 = fire_module(64, (3, 3))(pool3)
     pool4 = MaxPooling2D((2, 2))(down4) #16
     
-    down5 = fire_module(128, (3, 3))(pool4) #center
+    down5 = fire_module(128, (3, 3))(pool4)
+    pool5 = MaxPooling2D((2, 2))(down5) # 8
     
-    up6 = up_fire_module(64, (3, 3), down4)(down5) #32
-    up7 = up_fire_module(32, (3, 3), down3)(up6) #64
-    up8 = up_fire_module(16, (3, 3), down2)(up7) #128
-    up9 = up_fire_module(8, (3, 3), down1)(up8) #256
+    down6 = fire_module(256, (3, 3))(pool5) #center
     
-    outputs = Conv2D(num_classes, (1, 1), activation='sigmoid')(up9)
+    up6 = up_fire_module(128, (3, 3), down5)(down6) #16
+    up7 = up_fire_module(64, (3, 3), down4)(up6) #32
+    up8 = up_fire_module(32, (3, 3), down3)(up7) #64
+    up9 = up_fire_module(16, (3, 3), down2)(up8) #128
+    up10 = up_fire_module(8, (3, 3), down1)(up9) #256
+    
+    outputs = Conv2D(num_classes, (1, 1), activation='sigmoid')(up10)
 
     model = Model(inputs=[input_img], outputs=[outputs])
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])  
