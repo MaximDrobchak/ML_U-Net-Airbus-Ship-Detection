@@ -4,3 +4,5 @@ sklearn
 pandas
 numpy
 matplotlib
+cv2
+skimage

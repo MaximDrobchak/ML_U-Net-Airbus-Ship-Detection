@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import tensorflow as tf
-
+from skimage.morphology import label
 from params import INPUT_SHAPE, TRAIN_PATH, IMG_SIZE
 
 def rle_encode(img, min_max_threshold=1e-3, max_mean_threshold=None):
@@ -22,7 +22,9 @@ def rle_encode(img, min_max_threshold=1e-3, max_mean_threshold=None):
     return ' '.join(str(x) for x in runs)
 
 def masks_as_image(in_mask_list):
-    # Take the individual ship masks and create a single mask array for all ships
+    '''
+    Take the individual ship masks and create a single mask array for all ships
+    '''
     all_masks = np.zeros(IMG_SIZE, dtype = np.uint8)
     for mask in in_mask_list:
         if isinstance(mask, str):
@@ -60,7 +62,9 @@ def multi_rle_encode(img, **kwargs):
         return [rle_encode(labels==k, **kwargs) for k in np.unique(labels[labels>0])]
 
 def masks_as_color(in_mask_list):
-    # Take the individual ship masks and create a color mask array for each ships
+    '''
+     Take the individual ship masks and create a color mask array for each ships
+    '''
     all_masks = np.zeros((768, 768), dtype = np.float)
     scale = lambda x: (len(in_mask_list)+x+1) / (len(in_mask_list)*2) ## scale the heatmap image to shift 
     for i,mask in enumerate(in_mask_list):

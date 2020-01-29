@@ -2,6 +2,7 @@ from keras.models import Model
 from keras.layers import Input, concatenate, Conv2D, MaxPooling2D,  BatchNormalization, Conv2DTranspose
 from keras.optimizers import Adam
 from params import momentum, TARGET_SIZE
+from losses import dice_coeff, dice_loss, bce_dice_loss
 
 def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
 
@@ -51,6 +52,6 @@ def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
     outputs = Conv2D(num_classes, (1, 1), activation='sigmoid')(up10)
 
     model = Model(inputs=[input_img], outputs=[outputs])
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])  
+    model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_coeff])  
 
     return model
