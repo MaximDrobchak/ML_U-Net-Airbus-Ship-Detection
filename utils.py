@@ -47,8 +47,30 @@ def rle_decode(mask_rle, shape=INPUT_SHAPE):
         img[lo:hi] = 1
     return img.reshape(shape).T
 
+
+
+def multi_rle_encode(img, **kwargs):
+    '''
+    Encode connected regions as separated masks
+    '''
+    labels = label(img)
+    if img.ndim > 2:
+        return [rle_encode(np.sum(labels==k, axis=2), **kwargs) for k in np.unique(labels[labels>0])]
+    else:
+        return [rle_encode(labels==k, **kwargs) for k in np.unique(labels[labels>0])]
+
+def masks_as_color(in_mask_list):
+    # Take the individual ship masks and create a color mask array for each ships
+    all_masks = np.zeros((768, 768), dtype = np.float)
+    scale = lambda x: (len(in_mask_list)+x+1) / (len(in_mask_list)*2) ## scale the heatmap image to shift 
+    for i,mask in enumerate(in_mask_list):
+        if isinstance(mask, str):
+            all_masks[:,:] += scale(i) * rle_decode(mask)
+    return all_masks
+
+
 def display(display_list):
-    plt.figure(figsize=(10, 10))
+        plt.figure(figsize=(10, 10))
 
     title = ['Input Image', 'True Mask', 'Predicted Mask']
 
@@ -67,13 +89,3 @@ def get_mask_with_image(ImageId, masks_df):
     mask  = np.expand_dims(mask, -1)
     mask  = mask[::3,::3]
     return [image],[mask]
-
-def multi_rle_encode(img, **kwargs):
-    '''
-    Encode connected regions as separated masks
-    '''
-    labels = label(img)
-    if img.ndim > 2:
-        return [rle_encode(np.sum(labels==k, axis=2), **kwargs) for k in np.unique(labels[labels>0])]
-    else:
-        return [rle_encode(labels==k, **kwargs) for k in np.unique(labels[labels>0])]

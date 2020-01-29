@@ -1,5 +1,6 @@
 from keras.models import Model
 from keras.layers import Input, concatenate, Conv2D, MaxPooling2D,  BatchNormalization, Conv2DTranspose
+from keras.optimizers import Adam
 from params import momentum, TARGET_SIZE
 
 def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
