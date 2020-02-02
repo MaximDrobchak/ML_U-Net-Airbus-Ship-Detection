@@ -126,6 +126,8 @@ def iou_coef_loss(y_true, y_pred):
 ```
 
 # References
-[Understanding the map evaluation metric for object detection](https://medium.com/@timothycarlen/understanding-the-map-evaluation-metric-for-object-detection-a07fe6962cf3)
-[Help to understand loss func for segmentation](https://lars76.github.io/neural-networks/object-detection/losses-for-segmentation/)
-[Custom loss functions in keras](https://medium.com/@j.ali.hab/on-custom-loss-functions-in-keras-3af88cf59e48)
+[Understanding the map evaluation metric for object detection](https://medium.com/@timothycarlen/understanding-the-map-evaluation-metric-for-object-detection-a07fe6962cf3)<br />
+
+[Help to understand loss func for segmentation](https://lars76.github.io/neural-networks/object-detection/losses-for-segmentation/)<br />
+
+[Custom loss functions in keras](https://medium.com/@j.ali.hab/on-custom-loss-functions-in-keras-3af88cf59e48)<br />
