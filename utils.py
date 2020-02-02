@@ -2,7 +2,8 @@ import os
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-# import tensorflow as tf
+import tensorflow as tf
+from skimage.io import imread
 from skimage.morphology import label
 from params import INPUT_SHAPE, TRAIN_PATH, IMG_SIZE
 
@@ -34,7 +35,7 @@ def masks_as_image(in_mask_list):
 def rle_decode(mask_rle, shape=INPUT_SHAPE):
     '''
     mask_rle: run-length as string formated (start length)
-    shape: (height,width) of array to return 
+    shape: (height,width) of array to return
     Returns numpy array, 1 - mask, 0 - background
 
     '''
@@ -66,25 +67,25 @@ def masks_as_color(in_mask_list):
      Take the individual ship masks and create a color mask array for each ships
     '''
     all_masks = np.zeros((768, 768), dtype = np.float)
-    scale = lambda x: (len(in_mask_list)+x+1) / (len(in_mask_list)*2) ## scale the heatmap image to shift 
+    scale = lambda x: (len(in_mask_list)+x+1) / (len(in_mask_list)*2) ## scale the heatmap image to shift
     for i,mask in enumerate(in_mask_list):
         if isinstance(mask, str):
             all_masks[:,:] += scale(i) * rle_decode(mask)
     return all_masks
 
 
-# def display(display_list):
-#         plt.figure(figsize=(10, 10))
+def display(display_list):
+        plt.figure(figsize=(10, 10))
 
-#     title = ['Input Image', 'True Mask', 'Predicted Mask']
+    title = ['Input Image', 'True Mask', 'Predicted Mask']
 
-#     for i in range(len(display_list)):
-#         plt.subplot(1, len(display_list), i+1)
-#         plt.title(title[i])
-#         plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
-#         plt.axis('off')
-#     plt.show()
-        
+    for i in range(len(display_list)):
+        plt.subplot(1, len(display_list), i+1)
+        plt.title(title[i])
+        plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
+        plt.axis('off')
+    plt.show()
+
 
 def get_mask_with_image(ImageId, masks_df):
     image = imread(os.path.join(TRAIN_PATH, ImageId))

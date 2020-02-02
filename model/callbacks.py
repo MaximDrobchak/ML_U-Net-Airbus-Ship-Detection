@@ -1,7 +1,7 @@
 import math
 from keras.callbacks import ModelCheckpoint, LearningRateScheduler, EarlyStopping, ReduceLROnPlateau, TerminateOnNaN, TensorBoard
 from matplotlib import pyplot as plt
-
+import keras
 weight_path="{}_weights.best.hdf5".format('model')
 
 checkpoint = ModelCheckpoint(weight_path, monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weights_only=True)
@@ -11,15 +11,15 @@ def lr_decay(epoch):
 
 callback_learning_rate = LearningRateScheduler(lr_decay, verbose=True)
 
-class EarlyStop(tf.keras.callbacks.Callback):
+class EarlyStop(keras.callbacks.Callback):
   def on_epoch_end(self, epoch, logs={}):
     if(logs.get('val_loss')<0.05):
       print("\nReached 005%% value losse so cancelling training!")
       self.model.stop_training = True
-        
-early_stop = EarlyStop()  
 
-class PlotLosses(tf.keras.callbacks.Callback):
+early_stop = EarlyStop()
+
+class PlotLosses(keras.callbacks.Callback):
     def on_train_begin(self, logs={}):
         self.i = 0
         self.x = []
@@ -32,7 +32,7 @@ class PlotLosses(tf.keras.callbacks.Callback):
         self.logs = []
 
     def on_epoch_end(self, epoch, logs={}):
-        
+
         self.logs.append(logs)
         self.x.append(self.i)
         self.losses.append(logs.get('loss'))
@@ -49,7 +49,7 @@ class PlotLosses(tf.keras.callbacks.Callback):
         ax1.set_ylabel('Accuracy')
         ax1.set_xlabel('Epoch')
         ax1.legend(['Train', 'Test'], loc='upper left')
-        
+
         ax2.plot(self.x, self.losses, label="loss")
         ax2.plot(self.x, self.val_losses, label="val_loss")
         ax2.set_title('Model loss')
@@ -60,6 +60,6 @@ class PlotLosses(tf.keras.callbacks.Callback):
 
 plot_losses = PlotLosses()
 
-tensorboard_log = TensorBoard(log_dir="./logs")  
+tensorboard_log = TensorBoard(log_dir="./logs")
 
 callbacks_list = [checkpoint,callback_learning_rate, plot_losses]

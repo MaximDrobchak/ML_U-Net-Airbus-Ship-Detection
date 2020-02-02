@@ -8,3 +8,4 @@ EPOCHS      = 25
 BATCH_SIZE  = 48
 momentum    = 0.9
 THRESHOLD   = 0.75
+EPOCHS      = 10
