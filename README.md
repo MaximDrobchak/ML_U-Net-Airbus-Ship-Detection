@@ -34,7 +34,10 @@ The neural network structure is derived from the *U-Net* architecture, described
     ├────dice_with_binary_cross_loss.ipynb         # `dice_loss` with `bynary_cross`
     ├────dice_coef_loss.ipynb                      # `dice_loss` 
     ├────iou_coef_loss.ipynb                       # `iou_coef_loss` 
-    ├── model
+    ├──model
+    ├────U-net_dice_coef                           # trained model `dice_loss` 
+    ├────U-net_dice_comb_binary_crossentropy       # trained model `dice_loss` with `bynary_cross`
+    ├────U-net_iou_coef                            # trained model `iou_coef_loss`
     ├────callbacks.py                              # Clallbacks for training model
     ├────losses.py                                 # Losess functions
     ├────metrics.py                                # Metrics
