@@ -2,7 +2,7 @@ import os
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
-import tensorflow as tf
+# import tensorflow as tf
 from skimage.morphology import label
 from params import INPUT_SHAPE, TRAIN_PATH, IMG_SIZE
 
@@ -73,17 +73,17 @@ def masks_as_color(in_mask_list):
     return all_masks
 
 
-def display(display_list):
-        plt.figure(figsize=(10, 10))
+# def display(display_list):
+#         plt.figure(figsize=(10, 10))
 
-    title = ['Input Image', 'True Mask', 'Predicted Mask']
+#     title = ['Input Image', 'True Mask', 'Predicted Mask']
 
-    for i in range(len(display_list)):
-        plt.subplot(1, len(display_list), i+1)
-        plt.title(title[i])
-        plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
-        plt.axis('off')
-    plt.show()
+#     for i in range(len(display_list)):
+#         plt.subplot(1, len(display_list), i+1)
+#         plt.title(title[i])
+#         plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
+#         plt.axis('off')
+#     plt.show()
         
 
 def get_mask_with_image(ImageId, masks_df):

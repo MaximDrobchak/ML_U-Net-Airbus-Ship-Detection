@@ -2,23 +2,25 @@ from keras.models import Model
 from keras.layers import Input, concatenate, Conv2D, MaxPooling2D,  BatchNormalization, Conv2DTranspose
 from keras.optimizers import Adam
 from params import momentum, TARGET_SIZE
-from losses import dice_coeff, dice_loss, bce_dice_loss
+from losses import dice_coef, dice_loss, bce_dice_loss
 
 def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
 
-    def fire(x, filters, kernel_size):
+    def fire(x, filters, kernel_size, dropout):
         y1 = Conv2D(filters, kernel_size, activation='relu', padding='same')(x)
+        if dropout is not None:
+            y1= Dropout(dropout)(y1)
         y2 = Conv2D(filters, kernel_size, activation='relu', padding='same')(y1)
-        y3 = BatchNormalization(momentum=momentum)(y2)     
+        y3 = BatchNormalization(momentum=0.9)(y2)     
         return y3
 
-    def fire_module(filters, kernel_size):
-        return lambda x: fire(x, filters, kernel_size)
+    def fire_module(filters, kernel_size, dropout=0.2):
+        return lambda x: fire(x, filters, kernel_size, dropout)
 
     def fire_up(x, filters, kernel_size, concat_layer):
         y1 = Conv2DTranspose(filters, (2, 2), strides=(2, 2), padding='same')(x)
         y2 = concatenate([y1, concat_layer])
-        y3 = fire_module(filters, kernel_size)(y2)
+        y3 = fire_module(filters, kernel_size, dropout=None)(y2)
         return y3
 
     def up_fire_module(filters, kernel_size, concat_layer):
@@ -52,6 +54,6 @@ def get_unet_model(input_shape=(*TARGET_SIZE, 3), num_classes=1):
     outputs = Conv2D(num_classes, (1, 1), activation='sigmoid')(up10)
 
     model = Model(inputs=[input_img], outputs=[outputs])
-    model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_coeff])  
+    model.compile(optimizer='adam', loss=bce_dice_loss, metrics=[dice_coef])  
 
     return model

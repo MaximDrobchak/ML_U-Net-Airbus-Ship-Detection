@@ -31,7 +31,7 @@ history = model.fit_generator(train_gen,
                              steps_per_epoch=train_df.shape[0]//BATCH_SIZE,
                              epochs=EPOCHS,
                              validation_data=valid_gen,
-                             validation_steps=valid_gen.shape[0]//BATCH_SIZE,
+                             validation_steps=valid_df.shape[0]//BATCH_SIZE,
                              callbacks=callbacks_list)
 
 accuracy = history.history['acc']
