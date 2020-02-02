@@ -27,13 +27,13 @@ The neural network structure is derived from the *U-Net* architecture, described
 ###  Struct all directory
     .
     ├── train                                      # Notebooks of train with difference losess and metrics
-    ├────U-net_dice_comb_binar_cross.ipynb         # train combined `dice_loss` with `bynary_cross` loss
-    ├────U-net_iou_coef.ipynb                      # train `iou_loss`
+    ├────U-net_dice_comb_binar_cross.ipynb         # train combined `dice_loss` with `bynary_cross` loss 
+    ├────U-net_iou_coef.ipynb                      # train `iou_loss`  
     ├────U-net_dice_coef.ipynb                     # train `dice_loss`
     ├── submission                                 # Notebooks with difference losess submission
     ├────dice_with_binary_cross_loss.ipynb         # `dice_loss` with `bynary_cross`
-    ├────dice_coef_loss.ipynb                      # `dice_loss`
-    ├────iou_coef_loss.ipynb                       # `iou_coef_loss`
+    ├────dice_coef_loss.ipynb                      # `dice_loss` 
+    ├────iou_coef_loss.ipynb                       # `iou_coef_loss` 
     ├── model
     ├────callbacks.py                              # Clallbacks for training model
     ├────losses.py                                 # Losess functions
@@ -41,7 +41,10 @@ The neural network structure is derived from the *U-Net* architecture, described
     ├────u_net.py                                  # Model U-net
     |──data
     ├────balanced_and_split_data.ipynb             # Notebook with balance and split data
-    ├────utils.py                                  # Help tools for preprocess data and plot data.
+    ├────understand_data.ipynb                     # Notebook with analysis data
+    ├──utils.py                                    # Help tools for preprocess data and plot data.
+    ├──params.py                                   # Constants variables.
+    ├──train.py                                    # Train model.
     └── README.md
 
 ## Train data
