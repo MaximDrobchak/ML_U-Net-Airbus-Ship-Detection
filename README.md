@@ -46,7 +46,7 @@ The neural network structure is derived from the *U-Net* architecture, described
     ├────balanced_and_split_data.ipynb             # Notebook with balance and split data
     ├────understand_data.ipynb                     # Notebook with analysis data
     ├──utils.py                                    # Help tools for preprocess data and plot data.
-    ├──params.py                                   # Constants variables.
+    ├──params.py                                   # Constants.
     ├──train.py                                    # Train model.
     └── README.md
 
